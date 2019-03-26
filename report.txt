@@ -1,0 +1,35 @@
+
+
+In this implementation, we first generated random data to be inserted into the
+hash tables. While doing this, we used a timer implementation to record the CPU
+times required to perform the insertions to each respective hash table. Because
+of this pattern, it is important to minimize the amount of code that the timer is
+recording the execution time for, to represent the insertion/find times as accurately
+as possible, following a pattern similar to, for example, reducing critical sections of
+multi-threaded code sharing a resource to be as small as possible.
+
+Below is an example of results gained from running the performance analysis:
+
+-----------------------Performance - Open Hashing-----------------------
+___________|  100,000  |  200,000  |  300,000  |  400,000  |  500,000  |
+Build      | 0.000012s | 0.000193s | 0.001757s | 0.012136s | 0.098782s |
+Found      | 0.000000s | 0.000000s | 0.000004s | 0.000066s | 0.000210s |
+Not Found  | 0.000001s | 0.000010s | 0.000053s | 0.000319s | 0.001538s |
+
+-------------Performance - Hashing with Quadratic Probing---------------
+___________|  100,000  |  200,000  |  300,000  |  400,000  |  500,000  |
+Build      | 0.000007s | 0.000070s | 0.000681s | 0.003987s | 0.026630s |
+Found      | 0.000000s | 0.000000s | 0.000002s | 0.000011s | 0.000067s |
+Not Found  | 0.000001s | 0.000006s | 0.000034s | 0.000233s | 0.001217s |
+
+-------------Performance - Hashing with Double Hashing------------------
+___________|  100,000  |  200,000  |  300,000  |  400,000  |  500,000  |
+Build      | 0.000009s | 0.000090s | 0.000714s | 0.005138s | 0.034585s |
+Found      | 0.000000s | 0.000000s | 0.000000s | 0.000000s | 0.000000s |
+Not Found  | 0.000001s | 0.000007s | 0.000040s | 0.000217s | 0.001178s |
+
+
+Reviewing our results, we see that Open Hashing is by far the least efficient for insertions,
+with Quadratic Probing being slightly faster than Double Hashing in this implementation.
+On the other hand, successful find operations are extremely fast using Double Hashing in
+comparison to the other two, and the most efficient by a small margin for unsuccessful find operations.
